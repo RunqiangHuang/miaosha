@@ -1,0 +1,59 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+</head>
+
+<body>
+    <div id="app">
+        <template>
+            <el-table :data="items" stripe style="width: 100%">
+                <el-table-column prop="title" label="商品名" width="180">
+                </el-table-column>
+                <el-table-column prop="description" label="商品描述" width="180">
+                </el-table-column>
+                <el-table-column prop="imgUrl" label="商品图片">
+                </el-table-column>
+                <el-table-column prop="price" label="商品价格">
+                </el-table-column>
+                <el-table-column prop="stock" label="商品库存">
+                </el-table-column>
+                <el-table-column prop="sales" label="商品销量">
+                </el-table-column>
+            </el-table>
+        </template>
+    </div>
+</body>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script>
+var app = new Vue({
+    el: '#app',
+    data: {
+        items: [],
+    },
+    methods: {
+
+    },
+    created: function() {
+        var vm = this
+        axios({
+                method: 'get',
+                url: 'http://localhost:8080/item/list',   
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                withCredentials: true,
+            })
+            .then(resp => {
+            	vm.items = resp.data.data
+            })
+            .catch(err => {
+                this.$message.error('获取信息失败，原因为：' + err.status + ', ' + err.statusText);
+            });
+    }
+
+});
+</script>
+
+</html>
